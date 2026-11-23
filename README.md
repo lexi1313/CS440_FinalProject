@@ -79,7 +79,7 @@ pip install -r requirements.txt
 
 ### 2. Download the Dataset
 
-Download `skillscope_data.db` from the [NLBSE Skill Competition dataset](https://huggingface.co/datasets/NLBSE/SkillCompetition). Ensure the dataset is v2 to avoid errors.
+Download `skillscope_data.db` from the [NLBSE Skill Competition dataset](https://huggingface.co/datasets/NLBSE/SkillCompetition/blob/main/skillscope_data_v2.zip). Ensure the dataset is v2 to avoid errors.
 
 When running locally, place the database in the `data` directory and update the `db_path` variable in the notebook to match its location.
 
