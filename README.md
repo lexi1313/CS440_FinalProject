@@ -7,12 +7,12 @@ The 2027 competition consists of building and assessing multi‑label classifier
 
 ## Dataset
 
-We release a dataset mined from 7,245 merged pull requests across 11 popular Java repositories (57,206 source files; 59,644 methods; 13,097 classes) annotated with 217 skill labels composed by domain/sub‑domains You may find the dataset in a SQLite database, named `skillscope_data.db`, [here](https://huggingface.co/datasets/NLBSE/SkillCompetition). This dataset is an updated version of the one submitted in the original [SkillScope](#citing-relevant-work) paper.
+We release a dataset mined from 7,245 merged pull requests across 11 popular Java repositories (57,206 source files; 59,644 methods; 13,097 classes) annotated with 217 skill labels composed by domain/sub‑domains. You may find the dataset in a SQLite database, named `skillscope_data.db`, [here](https://huggingface.co/datasets/NLBSE/SkillCompetition). This dataset is an updated version of the one submitted in the original [SkillScope](#citing-relevant-work) paper.
 
 ### Ready-made Table
-Inside the database you will find a table named `nlbse_tool_competition_data_by_issue` that joins each pull request’s textual and code‑context features with its canonical domain/sub‑domain labels per issue. There is also a view `vw_nlbse_tool_competition_data_by_file` that labels each filename/function associated with each issue. 
+Inside the database, you will find a table named `nlbse_tool_competition_data_by_issue` that joins each pull request’s textual and code‑context features with its canonical domain/sub‑domain labels per issue. There is also a view `vw_nlbse_tool_competition_data_by_file` that labels each filename/function associated with each issue. 
 
-- The `nlbse_tool_competition_data_by_issue` table contains a column for each domain and subdomain with an integer count of the number of matching APIs found for that issue. A value greater than zero indicates that domain/subdomain is present in the issue.
+- The `nlbse_tool_competition_data_by_issue` table contains a column for each domain and subdomain with an integer count of the number of matching APIs found for that issue. A value greater than zero indicates that the domain/subdomain is present in the issue.
 
 - The `vw_nlbse_tool_competition_data_by_file` is present for convenience purposes only and will not be used in evaluation of the model.
 
@@ -20,26 +20,26 @@ Inside the database you will find a table named `nlbse_tool_competition_data_by_
 Your model is allowed to use input data that is outside what is given in the database. You may use additional GitHub APIs to fetch more metadata, or download relevant files in an issue for further analysis. However, you must not use any third-party classification engine or the outputs present in `skillscope_data.db` as direct inputs to the model. 
 
 ### Baselines
-Your models will be compared against the SkillScope Random‑Forest + TF‑IDF baselines reported in the paper by evaluating the overall prediction metrics against the issue classifications as recorded in the `nlbse_tool_competition_data_by_issue` table. The models you create should return a multi-label classification encoded in an one-hot encoded vector. However, it is the metrics of your models which will be the subject to the evaluation instead of the specific model output. Random Forest Baseline is provided in the folder `competition_baseline` with README and requirements.txt.
+Your models will be compared against the SkillScope Random‑Forest + TF‑IDF baselines reported in the paper by evaluating the overall prediction metrics against the issue classifications as recorded in the `nlbse_tool_competition_data_by_issue` table. The models you create should return a multi-label classification encoded in a one-hot encoded vector. However, it is the metrics of your models that will be subject to the evaluation instead of the specific model output. Random Forest Baseline is provided in the folder `competition_baseline` with README and requirements.txt.
 
 ### Goal
-Train, tune and evaluate your models on the provided splits and improve at least one of precision, recall, or micro‑F1 while not decreasing the remaining metrics relative to the best baseline.
+Train, tune, and evaluate your models on the provided splits and improve at least one of precision, recall, or micro‑F1 while not decreasing the remaining metrics relative to the best baseline.
 
 ## Our Implementation
 
-We implemented and evaluate three models for multi-label skill classification: Random forest, Logistic Regression, and a Multi-Layer Perceptron. All three models use TF-IDF feautres extracted from issue and description text. 
+We implemented and evaluated three models for multi-label skill classification: Random Forest, Logistic Regression, and a Multi-Layer Perceptron. All three models use TF-IDF features extracted from the issue and description text. 
 
 ### Random Forest
 We implemented a Random Forest classifier as a baseline for comparing model performance. The model uses 100 decision trees trained on TF-IDF features to predict multiple skill labels for each issue. We evaluated its performance on the same validation split used by the other models to ensure consistent comparisons.
 
 ### Logistic Regression
-We implemented Logistic Regression using a One-vs-Rest approach, which trains a separate binary classifier for each skill label. The model uses class balancing to account for differences in label frequency and TF-IDF features to represent issue text. We evaluated its performance against the Random Forest baseline using precision, recall, and F1 scores.
+We implemented Logistic Regression using a One-vs-Rest approach, which trains a separate binary classifier for each skill label. The model uses class balancing to account for differences in label frequency, and TF-IDF features to represent issue text. We evaluated its performance against the Random Forest baseline using precision, recall, and F1 scores.
 
 ### Multi-Layer Perceptron Model
 We implemented a Multi-Layer Perceptron neural network using TensorFlow and Keras. The model consists of two hidden layers with 256 and 128 units, batch normalization, and regularization to reduce overfitting. We trained the model using binary cross-entropy loss and early stopping, then evaluated multiple classification thresholds to identify a configuration that improves performance without degrading the baseline metrics.
 
 ## Evaluation
-Model performance is evaluated using precision, recall, micro-F1, and macro-F1. The competition requires that a candidate model improve at least one of the required metrics without degradting the others. The `evaluation.py` script extracts saved validation metrics from `CS440_FinalProject.ipynb` and compares the model performance against the baseline thresholds. 
+Model performance is evaluated using precision, recall, micro-F1, and macro-F1. The competition requires that a candidate model improve at least one of the required metrics without degrading the others. The `evaluation.py` script extracts saved validation metrics from `CS440_FinalProject.ipynb` and compares the model performance against the baseline thresholds. 
 
 _It is important to note that this script reads previously computed outputs and does not retrain or independently recalculate performance metrics._
 
@@ -79,7 +79,7 @@ pip install -r requirements.txt
 
 ### 2. Download the Dataset
 
-Download `skillscope_data.db` from the [NLBSE Skill Competition dataset](https://huggingface.co/datasets/NLBSE/SkillCompetition). Ensure dataset is v2 to avoid errors.
+Download `skillscope_data.db` from the [NLBSE Skill Competition dataset](https://huggingface.co/datasets/NLBSE/SkillCompetition). Ensure the dataset is v2 to avoid errors.
 
 When running locally, place the database in the `data` directory and update the `db_path` variable in the notebook to match its location.
 
@@ -101,7 +101,7 @@ python evaluation.py
 
 ## Organizers
 
-The skill classification competition is organized by: Fabio Santos (fabio.deabreusantos@colostate.edu), and Jacob Penney (jmp458@nau.edu)
+The skill classification competition is organized by: Fabio Santos (fabio.deabreusantos@colostate.edu) and Jacob Penney (jmp458@nau.edu)
 
 ## Submission Acceptance & Competition
 
