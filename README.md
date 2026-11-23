@@ -25,6 +25,80 @@ Your models will be compared against the SkillScope Random‑Forest + TF‑IDF b
 ### Goal
 Train, tune and evaluate your models on the provided splits and improve at least one of precision, recall, or micro‑F1 while not decreasing the remaining metrics relative to the best baseline.
 
+## Our Implementation
+
+We implemented and evaluate three models for multi-label skill classification: Random forest, Logistic Regression, and a Multi-Layer Perceptron. All three models use TF-IDF feautres extracted from issue and description text. 
+
+### Random Forest
+We implemented a Random Forest classifier as a baseline for comparing model performance. The model uses 100 decision trees trained on TF-IDF features to predict multiple skill labels for each issue. We evaluated its performance on the same validation split used by the other models to ensure consistent comparisons.
+
+### Logistic Regression
+We implemented Logistic Regression using a One-vs-Rest approach, which trains a separate binary classifier for each skill label. The model uses class balancing to account for differences in label frequency and TF-IDF features to represent issue text. We evaluated its performance against the Random Forest baseline using precision, recall, and F1 scores.
+
+### Multi-Layer Perceptron Model
+We implemented a Multi-Layer Perceptron neural network using TensorFlow and Keras. The model consists of two hidden layers with 256 and 128 units, batch normalization, and regularization to reduce overfitting. We trained the model using binary cross-entropy loss and early stopping, then evaluated multiple classification thresholds to identify a configuration that improves performance without degrading the baseline metrics.
+
+## Evaluation
+Model performance is evaluated using precision, recall, micro-F1, and macro-F1. The competition requires that a candidate model improve at least one of the required metrics without degradting the others. The `evaluation.py` script extracts saved validation metrics from `CS440_FinalProject.ipynb` and compares the model performance against the baseline thresholds. 
+
+_It is important to note that this script reads previously computed outputs and does not retrain or independently recalculate performance metrics._
+
+### Model Comparison Table
+The following table summarizes the performance of each model using precision, recall, micro-F1, and macro-F1. Results were extracted using `evaluation.py`, which also checks for degradation relative to the baseline.
+
+```
++---------------------+-------------+----------+------------+------------+----------------+
+| Model               |   Precision |   Recall |   Micro-F1 |   Macro-F1 | Degradation?   |
++=====================+=============+==========+============+============+================+
+| Random Forest       |      0.7201 |   0.3643 |     0.4838 |     0.0922 | Baseline       |
++---------------------+-------------+----------+------------+------------+----------------+
+| Logistic Regression |      0.6041 |   0.3611 |     0.452  |     0.1698 | Yes            |
++---------------------+-------------+----------+------------+------------+----------------+
+| MLP (0.68)          |      0.7175 |   0.3762 |     0.4936 |     0.1051 | Yes            |
++---------------------+-------------+----------+------------+------------+----------------+
+| MLP (0.69)          |      0.7226 |   0.3701 |     0.4895 |     0.1025 | No             |
++---------------------+-------------+----------+------------+------------+----------------+
+| MLP (0.70)          |      0.726  |   0.3638 |     0.4847 |     0.1003 | Yes            |
++---------------------+-------------+----------+------------+------------+----------------+
+| MLP (0.71)          |      0.7282 |   0.3564 |     0.4785 |     0.0975 | Yes            |
++---------------------+-------------+----------+------------+------------+----------------+
+```
+
+### Results
+We selected the MLP model with a classification threshold of 0.69 because it was the only evaluated configuration that improved precision, recall, and micro-F1 compared to the Random Forest baseline without degrading the remaining required metrics.
+
+## Running the Code
+
+### 1. Install Dependencies
+
+Install the required Python packages using the provided `requirements.txt` file:
+
+```
+pip install -r requirements.txt
+```
+
+### 2. Download the Dataset
+
+Download `skillscope_data.db` from the [NLBSE Skill Competition dataset](https://huggingface.co/datasets/NLBSE/SkillCompetition). Ensure dataset is v2 to avoid errors.
+
+When running locally, place the database in the `data` directory and update the `db_path` variable in the notebook to match its location.
+
+### 3. Run the Models
+
+Open `CS440_FinalProject.ipynb` in Jupyter Notebook, VS Code, or Google Colab.
+
+Run the data-loading and preprocessing cells before training the models. The notebook contains implementations of Random Forest, Logistic Regression, and a Multi-Layer Perceptron (MLP), along with their evaluation procedures.
+
+The original competition baseline is included separately in the `competition_baseline` directory and is not required to run the team's model comparison.
+
+### 4. Run the Evaluation
+
+To view and compare the saved model results without retraining, run:
+
+```
+python evaluation.py
+```
+
 ## Organizers
 
 The skill classification competition is organized by: Fabio Santos (fabio.deabreusantos@colostate.edu), and Jacob Penney (jmp458@nau.edu)
