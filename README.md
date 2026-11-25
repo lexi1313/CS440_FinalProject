@@ -27,6 +27,8 @@ Train, tune, and evaluate your models on the provided splits and improve at leas
 
 ## Our Implementation
 
+[GitHub Repository](https://github.com/lexi1313/CS440_FinalProject)
+
 We implemented and evaluated three models for multi-label skill classification: Random Forest, Logistic Regression, and a Multi-Layer Perceptron. All three models use TF-IDF features extracted from the issue and description text. 
 
 ### Random Forest
