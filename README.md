@@ -91,6 +91,8 @@ Open `CS440_FinalProject.ipynb` in Jupyter Notebook, VS Code, or Google Colab.
 
 Run the data-loading and preprocessing cells before training the models. The notebook contains implementations of Random Forest, Logistic Regression, and a Multi-Layer Perceptron (MLP), along with their evaluation procedures.
 
+_It is recommended to skip the invalid data split to save time (cell 3)._
+
 The original competition baseline is included separately in the `competition_baseline` directory and is not required to run the team's model comparison.
 
 ### 4. Run the Evaluation
